@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\IndoRegionController;
+use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\ImageProductsController;
 use App\Http\Controllers\CategoryProductsController;
 
@@ -43,6 +45,12 @@ Route::get('reviews', [ReviewsController::class, 'index']);
 // Route get Reviews
 Route::get('images', [ImageProductsController::class, 'index']);
 
+// Route get Province
+Route::get('/provinces', [IndoRegionController::class, 'indexProvince']);
+
+// Route get Regency
+Route::get('/regencies', [IndoRegionController::class, 'indexRegency']);
+
 
 // Prefix admin, namespace Admin
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
@@ -54,13 +62,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     // Middleware Admin
     Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
-      // Route get Admin Login
-      Route::get('/user', [AdminController::class, 'getUserLoggedIn']);
+        // Route get Admin Login Products
+        Route::get('/user', [AdminController::class, 'getUserLoggedIn']);
 
-      Route::get('products', [ProductsController::class, 'indexAdmin']);
+        // Route get Admin Products
+        Route::get('products', [ProductsController::class, 'indexAdmin']);
 
-      // Route Logout Admin
-      Route::post('/logout', [AdminController::class, 'logout']);
+        // Route get Admin Image Products
+        Route::get('images', [ImageProductsController::class, 'indexAdmin']);
+
+        // Route Logout Admin
+        Route::post('/logout', [AdminController::class, 'logout']);
     });
   });
 
@@ -79,6 +91,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     // Route resource Reviews
     Route::resource('reviews', ReviewsController::class)->except(['index', 'create', 'show', 'edit', 'store', 'update']);
 
+    // Route Resource Transaction
+    Route::resource('transactions', TransactionsController::class)->except(['create', 'edit']);
 });
 
 // Middleware User
@@ -99,6 +113,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/carts/{product}', [CartsController::class, 'store']);
 
     // Route Checkout Carts
-    Route::put('/carts/checkout/{cart} ', [CartsController::class, 'checkout']);
+    Route::put('/checkout/{cart}', [CartsController::class, 'checkout']);
+
+    // Route Resource Transaction
+    Route::resource('transactions', TransactionsController::class)->except(['create', 'edit', 'update', 'store', 'destroy']);
 });
 
