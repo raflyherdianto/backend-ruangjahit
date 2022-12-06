@@ -96,8 +96,13 @@ class TransactionsController extends Controller
             $appointment = Appointments::where('transaction_id', $transaction->id)->first();
             $appointment->status = '-';
             $appointment->save();
+        } else if ($transaction->status == 'FAILED') {
+            $appointment = Appointments::where('transaction_id', $transaction->id)->first();
+            $appointment->delete();
+        } else if ($transaction->status == 'SUCCESS'){
+            $appointment = Appointments::where('transaction_id', $transaction->id)->first();
+            $appointment->delete();
         }
-
         return new TransactionsResource($transaction);
     }
 
