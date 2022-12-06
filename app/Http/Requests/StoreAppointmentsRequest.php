@@ -13,7 +13,7 @@ class StoreAppointmentsRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreAppointmentsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'transaction_id'=>'nullable|integer',
+            'deadline'=>'nullable|string',
+            'status' => 'required|string',
         ];
     }
 }

@@ -8,7 +8,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\IndoRegionController;
+use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\ImageProductsController;
 use App\Http\Controllers\CategoryProductsController;
@@ -74,10 +76,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         // Route get Transactions
         Route::get('transactions', [TransactionsController::class, 'indexAdmin']);
 
+        // Route get Admin Appointments
+        Route::get('appointments', [AppointmentsController::class, 'indexAdmin']);
+
         // Route Logout Admin
         Route::post('/logout', [AdminController::class, 'logout']);
     });
-  });
+});
 
 // Middleware Admin
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
@@ -93,6 +98,9 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     // Route resource Reviews
     Route::resource('reviews', ReviewsController::class)->except(['index', 'create', 'show', 'edit', 'store', 'update']);
+
+    // Route Resource Transaction
+    Route::resource('appointments', AppointmentsController::class)->except(['create', 'edit', 'index', 'indexAdmin']);
 
     // Route Resource Transaction
     Route::resource('transactions', TransactionsController::class)->except(['create', 'edit', 'index', 'indexAdmin']);
@@ -117,6 +125,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Route Checkout Carts
     Route::put('/checkout/{cart}', [CartsController::class, 'checkout']);
+
+    // Route get User Appointment
+    Route::get('appointments', [AppointmentsController::class, 'index']);
+
+    // Route get User Favorite
+    Route::get('favorites', [FavoritesController::class, 'index']);
+
+    // Route add User Favorite
+    Route::post('/favorites/{product}', [FavoritesController::class, 'store']);
+
+    // Route delete User Favorite
+    Route::delete('favorites', [FavoritesController::class, 'destroy']);
 
     // Route Resource Transaction
     Route::resource('transactions', TransactionsController::class)->except(['create', 'edit', 'update', 'store', 'destroy']);

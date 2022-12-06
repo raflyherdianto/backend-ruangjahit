@@ -13,7 +13,7 @@ class StoreFavoritesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreFavoritesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_id' => 'nullable|integer',
+            'user_id' => 'nullable|integer',
+            'status'=>'nullable|boolean',
         ];
     }
 }

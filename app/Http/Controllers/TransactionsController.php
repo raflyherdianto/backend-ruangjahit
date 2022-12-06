@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Models\Appointments;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,7 +93,11 @@ class TransactionsController extends Controller
             $product = Products::where('id', $transaction->product_id)->first();
             $product->stock = $product->stock - $transaction->quantity;
             $product->save();
+            $appointment = Appointments::where('transaction_id', $transaction->id)->first();
+            $appointment->status = '-';
+            $appointment->save();
         }
+
         return new TransactionsResource($transaction);
     }
 
