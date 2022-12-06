@@ -71,6 +71,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         // Route get Admin Image Products
         Route::get('images', [ImageProductsController::class, 'indexAdmin']);
 
+        // Route get Transactions
+        Route::get('transactions', [TransactionsController::class, 'indexAdmin']);
+
         // Route Logout Admin
         Route::post('/logout', [AdminController::class, 'logout']);
     });
@@ -82,7 +85,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     // Route resource Categories
     Route::resource('categories', CategoryProductsController::class)->except(['index', 'create', 'edit']);
 
-    // Route resource Categories
+    // Route resource Image Products
     Route::resource('images', ImageProductsController::class)->except(['index', 'create', 'edit']);
 
     // Route resource Products
@@ -92,7 +95,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::resource('reviews', ReviewsController::class)->except(['index', 'create', 'show', 'edit', 'store', 'update']);
 
     // Route Resource Transaction
-    Route::resource('transactions', TransactionsController::class)->except(['create', 'edit']);
+    Route::resource('transactions', TransactionsController::class)->except(['create', 'edit', 'index', 'indexAdmin']);
 });
 
 // Middleware User
